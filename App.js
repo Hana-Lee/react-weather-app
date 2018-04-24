@@ -4,7 +4,8 @@ import Weather from './Weather';
 
 export default class App extends Component {
 	state = {
-		isLoaded: false
+		isLoaded: false,
+		error: null
 	};
 
 	positionHandler(position) {
@@ -28,6 +29,9 @@ export default class App extends Component {
 			},
 			error => {
 				console.error('get current position error', JSON.stringify(error));
+				this.setState({
+					error: error
+				});
 				this.useWatchPositionFn(successHandler);
 			},
 			{
@@ -65,7 +69,7 @@ export default class App extends Component {
 	}
 
 	render() {
-		const { isLoaded } = this.state;
+		const { isLoaded, error } = this.state;
 		return (
 			<View style={styles.container}>
 				{isLoaded ? (
@@ -75,6 +79,7 @@ export default class App extends Component {
 						<Text style={styles.loadingText}>
 							Getting the weather informations...
 						</Text>
+						{error ? <Text style={styles.errorText}>{error}</Text> : null}
 					</View>
 				)}
 			</View>
@@ -89,6 +94,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-start',
 		alignItems: 'stretch',
 		flexWrap: 'wrap'
+	},
+	errorText: {
+		color: 'red',
+		backgroundColor: 'transparent',
+		marginBottom: 40
 	},
 	loading: {
 		flex: 1,
