@@ -2,10 +2,30 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Weather from './Weather';
 
+const OWM_API_KEY = 'f10dd04df4bf97dc175fc2711e72a435';
+const MINUS = 273.15;
+
 export default class App extends Component {
 	state = {
 		isLoaded: false,
-		error: null
+		error: null,
+		temperature: null,
+		tempName: null
+	};
+
+	_getWeather = (lat, long) => {
+		fetch(
+			`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${OWM_API_KEY}`
+		)
+			.then(response => response.json())
+			.then(json => {
+				console.log(json);
+				this.setState({
+					temperature: json.main.temp,
+					tempName: json.weather[0].main,
+					isLoaded: true
+				});
+			});
 	};
 
 	positionHandler(position) {
@@ -22,9 +42,7 @@ export default class App extends Component {
 			position => {
 				console.log('get current position', position);
 				// successHandler(position).bind(this);
-				this.setState({
-					isLoaded: true
-				});
+				this._getWeather(position.coords.latitude, position.coords.longitude);
 				// this.useWatchPositionFn(successHandler);
 			},
 			error => {
