@@ -2,10 +2,11 @@
 	"main": "node_modules/expo/AppEntry.js",
 	"private": true,
 	"devDependencies": {
-		"prettier-eslint": "^8.8.1"
+		"prettier-eslint": "^8.8.1",
+		"eslint-config-airbnb": "^16.1.0"
 	},
 	"dependencies": {
-		"eslint-config-airbnb": "^16.1.0",
+		"@expo/vector-icons": "^6.3.1",
 		"expo": "^26.0.0",
 		"react": "16.3.0-alpha.1",
 		"react-native":
